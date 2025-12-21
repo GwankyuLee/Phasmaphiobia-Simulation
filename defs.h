@@ -73,16 +73,57 @@ struct CaseFile {
 
 // Implement here based on the requirements, should all be allocated to the House structure
 struct Room {
+    char name[MAX_ROOM_NAME];
+    struct Room* rooms[MAX_CONNECTIONS];
+    int connections;
+    struct Ghost* ghost;
+    struct Hunter* hunters[MAX_ROOM_OCCUPANCY];
+    int numHunters;
+    bool exit;
+    EvidenceByte evidence;
+    sem_t semaphore;
+
+};
+
+//stack implementation 
+struct RoomStack {
+    struct RoomNode* node;
+};
+
+struct RoomNode {
+    struct Room* room;
 };
 
 // Implement here based on the requirements, should be allocated to the House structure
 struct Ghost {
+    int id;
+    enum GhostType type;
+    struct Room* room;
+    int boredom;
+    bool exit;
+};
 
+struct Hunter {
+    char name[MAX_HUNTER_NAME];
+    int id;
+    struct Room* room;
+    struct CaseFile* casefile;
+    enum EvidenceType device;
+    struct RoomStack path;
+    int fear;
+    int boredom;
+    enum LogReason reason;
+    bool exit;
 };
 
 // Can be either stack or heap allocated
 struct House {
     struct Room* starting_room; // Needed by house_populate_rooms, but can be adjusted to suit your needs.
+    struct Room rooms[MAX_ROOMS];
+    int room_count;
+    struct Hunter* hunters;
+    struct CaseFile caseFile;
+    struct Ghost ghost;
 };
 
 /* The provided `house_populate_rooms()` function requires the following functions.
