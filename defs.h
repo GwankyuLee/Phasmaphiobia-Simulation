@@ -81,17 +81,17 @@ struct Room {
     int numHunters;
     bool exit;
     EvidenceByte evidence;
-    sem_t semaphore;
-
+    sem_t mutex;
 };
 
 //stack implementation 
 struct RoomStack {
-    struct RoomNode* node;
+    struct RoomNode* head;
 };
 
 struct RoomNode {
     struct Room* room;
+    struct RoomNode* next;
 };
 
 // Implement here based on the requirements, should be allocated to the House structure

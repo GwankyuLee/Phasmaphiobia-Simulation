@@ -18,6 +18,14 @@ int main() {
          - The evidence collected by each hunter and which ghost is represented by that evidence.
     7. Clean up all dynamically allocated resources and call sem_destroy() on all semaphores.
     */
-
+    /*
+    log hunter init
+    log move
+    log evidence
+    log swap
+    log exit
+    log return to van
+    similar for ghost
+    */
     return 0;
 }
