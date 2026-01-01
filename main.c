@@ -5,7 +5,13 @@
 #include "helpers.h"
 
 int main() {
+    struct House house;
+    struct Ghost ghost;
+    struct CaseFile casefile;
+    house_init(&house, &ghost, &casefile);
+    
 
+    
     /*
     1. Initialize a House structure.
     2. Populate the House with rooms using the provided helper function.

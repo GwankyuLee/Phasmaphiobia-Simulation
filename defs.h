@@ -126,12 +126,5 @@ struct House {
     struct Ghost ghost;
 };
 
-/* The provided `house_populate_rooms()` function requires the following functions.
-   You are free to rename them and change their parameters and modify house_populate_rooms()
-   as needed as long as the house has the correct rooms and connections after calling it.
-*/
-
-void room_init(struct Room* room, const char* name, bool is_exit);
-void rooms_connect(struct Room* a, struct Room* b); // Bidirectional connection
 
 #endif // DEFS_H

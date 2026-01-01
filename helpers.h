@@ -2,6 +2,7 @@
 #define HELPERS_H
 
 #include "defs.h"
+#include "functions.h"
 
 /**
  * @brief Return the lowercase token for a device.
