@@ -61,9 +61,13 @@ void ghost_init(struct Ghost* ghost, struct House* house) {
     //ghost begins in a random room of the house
     randN = rand() % (house->room_count);
     ghost->room = &(house->rooms[randN]);
+    //update room
+    house->rooms[randN].ghost = ghost; 
     
     ghost->boredom = 0;
     ghost->exit = false;
+    //log ghost init
+    log_ghost_init(ghost->id, ghost->room->name, ghost->type);
 }
 
 //casefile functions
@@ -78,6 +82,33 @@ void casefile_init(struct CaseFile* casefile) {
 
 //hunter functions
 
-void hunter_init(struct Hunter* hunter) {
+void hunter_init(struct Hunter** hunter, const char* name, int id, struct House* house) {
+    srand(time(NULL));
+    //allocate memory for new hunter
+    *hunter = malloc(sizeof(struct Hunter));
+    if (*hunter == NULL) {
+        fprintf(stderr, "Hunter Memorry allocation failed, Exiting the program. \n");
+        exit(EXIT_FAILURE);
+    }
 
+    strcpy((*hunter)->name, name);
+    (*hunter)->id = id;
+    (*hunter)->room = house->starting_room;
+    // update room
+    house->starting_room->hunters[house->starting_room->numHunters] = *hunter;
+    house->starting_room->numHunters++;
+
+    (*hunter)->casefile = &(house->caseFile);
+    //random device
+    enum EvidenceType* list;
+    int numType = get_all_evidence_types(&list);
+    int randN = rand() % (numType);
+    (*hunter)->device = list[randN];
+
+    (*hunter)->path.head = NULL;
+    (*hunter)->fear = 0;
+    (*hunter)->boredom = 0;
+    (*hunter)->reason = NULL;
+    (*hunter)->exit = false;
+    log_hunter_init(id, (*hunter)->room->name, name, (*hunter)->device);
 }

@@ -9,13 +9,43 @@ int main() {
     struct Ghost ghost;
     struct CaseFile casefile;
     house_init(&house, &ghost, &casefile);
-    
 
-    
+    char huntName[MAX_HUNTER_NAME];
+    int huntID;
+    int numHunters = 0;
+    house.hunters = malloc(MAX_ROOM_OCCUPANCY * sizeof(struct Hunter*));
+    if (house.hunters == NULL) {
+        fprintf(stderr, "House hunter array Memorry allocation failed, Exiting the program. \n");
+        exit(EXIT_FAILURE);
+    }
+
+    while(numHunters<MAX_ROOM_OCCUPANCY) {
+        printf("Please enter your hunter's name (type 'done' to stop) (63character limit): ");
+        scanf("%63s", huntName);
+        while (getchar() != '\n');
+        if (strcmp(huntName, "done") == 0) {
+            break;
+        }
+
+        printf("\nPlease enter your hunter's ID: ");
+        scanf("%d", &huntID);
+        while (getchar() != '\n');
+        hunter_init(&(house.hunters[numHunters]), huntName, huntID, &house);
+        numHunters++;
+    }
+    //realloc unused memory
+    house.hunters = realloc(house.hunters, numHunters*sizeof(struct Hunter*));
+    if (house.hunters == NULL && numHunters >0) {
+        fprintf(stderr, "realloc failed for hunters array");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("\n-finished initilization-\n");
     /*
     1. Initialize a House structure.
     2. Populate the House with rooms using the provided helper function.
     3. Initialize all of the ghost data and hunters.
+done
     4. Create threads for the ghost and each hunter.
     5. Wait for all threads to complete.
     6. Print final results to the console:
