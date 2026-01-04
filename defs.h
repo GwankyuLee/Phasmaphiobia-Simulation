@@ -121,7 +121,7 @@ struct House {
     struct Room* starting_room; // Needed by house_populate_rooms, but can be adjusted to suit your needs.
     struct Room rooms[MAX_ROOMS];
     int room_count;
-    struct Hunter* hunters;
+    struct Hunter** hunters;
     struct CaseFile caseFile;
     struct Ghost ghost;
 };

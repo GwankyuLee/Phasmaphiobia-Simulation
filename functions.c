@@ -26,7 +26,7 @@ void room_init(struct Room* room, const char* name, bool is_exit) {
     }
 }
 
-void rooms_connect(struct Room* a, struct Room* b) {
+void room_connect(struct Room* a, struct Room* b) {
     if (a->connections < MAX_CONNECTIONS && b->connections < MAX_CONNECTIONS) {
 
         a->rooms[a->connections] = b;
@@ -100,7 +100,7 @@ void hunter_init(struct Hunter** hunter, const char* name, int id, struct House*
 
     (*hunter)->casefile = &(house->caseFile);
     //random device
-    enum EvidenceType* list;
+    const enum EvidenceType* list;
     int numType = get_all_evidence_types(&list);
     int randN = rand() % (numType);
     (*hunter)->device = list[randN];
@@ -108,7 +108,7 @@ void hunter_init(struct Hunter** hunter, const char* name, int id, struct House*
     (*hunter)->path.head = NULL;
     (*hunter)->fear = 0;
     (*hunter)->boredom = 0;
-    (*hunter)->reason = NULL;
+    (*hunter)->reason = -1;
     (*hunter)->exit = false;
     log_hunter_init(id, (*hunter)->room->name, name, (*hunter)->device);
 }
