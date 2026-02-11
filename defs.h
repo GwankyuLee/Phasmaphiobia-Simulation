@@ -127,4 +127,10 @@ struct House {
 };
 
 
+struct Result {
+    bool ghost_won;
+    enum GhostType actual_ghost;
+    EvidenceByte final_evidence;
+};
+
 #endif // DEFS_H

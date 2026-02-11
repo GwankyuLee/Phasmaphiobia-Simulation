@@ -112,3 +112,32 @@ void hunter_init(struct Hunter** hunter, const char* name, int id, struct House*
     (*hunter)->exit = false;
     log_hunter_init(id, (*hunter)->room->name, name, (*hunter)->device);
 }
+
+
+void ghost_action(struct Ghost* ghost) {
+    if (ghost->room->numHunters>0) {
+        ghost->boredom = 0;
+        //choose between hunting, idle, 
+        /*
+        
+        If haunting, add evidence into the room that helps identify this ghost.
+        If moving, set the current room’s ghost pointer to 
+        NULL and the new room’s pointer to point to 
+        the ghost.
+        
+        
+        */
+    } else {
+        ghost->boredom++;
+        //choose between hauting, movuing, idling
+    }
+
+    if (ghost->boredom>ENTITY_BOREDOM_MAX) {
+        ghost->exit = true;
+        log_ghost_exit(ghost->id, ghost->boredom, ghost->room->name);
+    }
+}
+
+void hunter_action(struct Hunter* hunter) {
+    
+}

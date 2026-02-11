@@ -10,5 +10,11 @@ void house_init(struct House* house, struct Ghost* ghost, struct CaseFile* casef
 void ghost_init(struct Ghost* ghost, struct House* house);
 void casefile_init(struct CaseFile* casefile);
 void hunter_init(struct Hunter** hunter, const char* name, int id, struct House* house);
+void ghost_action(struct Ghost* ghost);
+void hunter_action(struct Hunter* hunter);
+
+
+void* hunter_thread(void* arg);
+void* ghost_thread(void* arg);
 
 #endif // FUNCTIONS_H
