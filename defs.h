@@ -23,6 +23,7 @@
 typedef unsigned char EvidenceByte; // Just giving a helpful name to unsigned char for evidence bitmasks
 
 enum LogReason {
+    LR_NONE = -1,
     LR_EVIDENCE = 0,
     LR_BORED = 1,
     LR_AFRAID = 2
@@ -82,6 +83,8 @@ struct Room {
     bool exit;
     EvidenceByte evidence;
     sem_t mutex;
+    //for BFS
+    int id;
 };
 
 //stack implementation 
@@ -92,6 +95,11 @@ struct RoomStack {
 struct RoomNode {
     struct Room* room;
     struct RoomNode* next;
+};
+
+struct RoomQueue {
+    struct RoomNode *front, *rear;
+    
 };
 
 // Implement here based on the requirements, should be allocated to the House structure
@@ -114,7 +122,10 @@ struct Hunter {
     int boredom;
     enum LogReason reason;
     bool exit;
+    bool returnVan;
 };
+
+
 
 // Can be either stack or heap allocated
 struct House {
@@ -122,8 +133,9 @@ struct House {
     struct Room rooms[MAX_ROOMS];
     int room_count;
     struct Hunter** hunters;
-    struct CaseFile caseFile;
-    struct Ghost ghost;
+    struct CaseFile* casefile;
+    struct Ghost* ghost;
+    int numHunters;
 };
 
 
@@ -131,6 +143,13 @@ struct Result {
     bool ghost_won;
     enum GhostType actual_ghost;
     EvidenceByte final_evidence;
+    double duration_ms;
 };
 
-#endif // DEFS_H
+struct ThreadArgs {
+    struct House* house;
+    struct Hunter* hunter;
+};
+
+
+#endif //DEFS_H

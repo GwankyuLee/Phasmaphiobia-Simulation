@@ -10,21 +10,21 @@
 // ---- House layout ----
 void house_populate_rooms(struct House* house) {
     // Willow House layout from Phasmaphobia, DO NOT MODIFY HOUSE LAYOUT
-    house->room_count = 13;
+    house->room_count = 0;
 
-    room_init(house->rooms+0, "Van", true);
-    room_init(house->rooms+1, "Hallway", false);
-    room_init(house->rooms+2, "Master Bedroom", false);
-    room_init(house->rooms+3, "Boy's Bedroom", false);
-    room_init(house->rooms+4, "Bathroom", false);
-    room_init(house->rooms+5, "Basement", false);
-    room_init(house->rooms+6, "Basement Hallway", false);
-    room_init(house->rooms+7, "Right Storage Room", false);
-    room_init(house->rooms+8, "Left Storage Room", false);
-    room_init(house->rooms+9, "Kitchen", false);
-    room_init(house->rooms+10, "Living Room", false);
-    room_init(house->rooms+11, "Garage", false);
-    room_init(house->rooms+12, "Utility Room", false);
+    room_init(house->rooms+0, "Van", true, house);
+    room_init(house->rooms+1, "Hallway", false, house);
+    room_init(house->rooms+2, "Master Bedroom", false, house);
+    room_init(house->rooms+3, "Boy's Bedroom", false, house);
+    room_init(house->rooms+4, "Bathroom", false, house);
+    room_init(house->rooms+5, "Basement", false, house);
+    room_init(house->rooms+6, "Basement Hallway", false, house);
+    room_init(house->rooms+7, "Right Storage Room", false, house);
+    room_init(house->rooms+8, "Left Storage Room", false, house);
+    room_init(house->rooms+9, "Kitchen", false, house);
+    room_init(house->rooms+10, "Living Room", false, house);
+    room_init(house->rooms+11, "Garage", false, house);
+    room_init(house->rooms+12, "Utility Room", false, house);
 
     room_connect(house->rooms+0, house->rooms+1);    // Van - Hallway
     room_connect(house->rooms+1, house->rooms+2);    // Hallway - Master Bedroom
