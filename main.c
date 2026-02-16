@@ -39,7 +39,7 @@ int main() {
         numInputHunters++;
     }
 
-    // --- 2. Create pipes and fork child processes ---
+    //pipes and forks for simulations
     int pipes[NUM_SIMULATIONS][2];
     pid_t pids[NUM_SIMULATIONS];
 
@@ -50,11 +50,10 @@ int main() {
         if (pids[i] < 0) { perror("fork"); exit(1); }
 
         if (pids[i] == 0) {
-            // --- CHILD PROCESS ---
+            // child process
             close(pipes[i][0]);  // close read end
             srand(time(NULL) ^ getpid());
 
-            // Create simulation house
             struct House house;
             struct Ghost ghost;
             struct CaseFile casefile;
@@ -71,7 +70,7 @@ int main() {
             printf("\n- pid:%d Finished initialization -\n", pids[i]);
 
             printf("\n-creating threads-\n");
-            // --- THREADS ---
+            // Init threads
             pthread_t ghostThread;
             pthread_t* hunterThreads = malloc(sizeof(pthread_t) * numInputHunters);
 
@@ -92,7 +91,7 @@ int main() {
                 pthread_join(hunterThreads[h], NULL);
             }
             
-            //freeing semaphores
+            // Freeing semaphores
             for (int i = 0; i < house.room_count; i++) {
                 sem_destroy(&house.rooms[i].mutex);
             }
@@ -105,7 +104,7 @@ int main() {
                               (end.tv_nsec - start.tv_nsec) / 1000000.0;
 
             struct Result result;
-            //go through loop of hunters and if at least 1 hunter's exit reason was 0 the hunter win.
+            // Go through loop of hunters and if at least 1 hunter's exit reason was 0 the hunter win.
             result.ghost_won = true;
             for (int i = 0; i<house.numHunters; i++){
                 if (house.hunters[i]->reason == 0){
@@ -131,11 +130,11 @@ int main() {
             exit(0);  // child done
         }
 
-        // --- PARENT ---
+        // Parent process
         close(pipes[i][1]); // close write end
     }
 
-    // --- 3. Parent collects results ---
+    // parent process collects resutls
     struct Result results[NUM_SIMULATIONS];
     double totalTime = 0.0;
     int ghostWins = 0, hunterWins = 0;
@@ -150,7 +149,7 @@ int main() {
         else hunterWins++;
     }
 
-    // --- 4. Display ---
+    // Print outcomes of each simulation
     for (int i = 0; i < NUM_SIMULATIONS; i++) {
         printf("Simulation %d:\n", i+1);
         printf("  Ghost Type: %s\n", ghost_to_string(results[i].actual_ghost));
@@ -165,34 +164,5 @@ int main() {
     printf("Average Duration: %.5f ms\n", totalTime / NUM_SIMULATIONS);
 
     
-
-
-
-
-    //each child process will print their own process's outcome.
-    //where the final parent process will print the summary outcome of all processes.
-
-    /*
-    1. Initialize a House structure.
-    2. Populate the House with rooms using the provided helper function.
-    3. Initialize all of the ghost data and hunters.
-done
-    4. Create threads for the ghost and each hunter.
-    5. Wait for all threads to complete.
-    6. Print final results to the console:
-         - Type of ghost encountered.
-         - The reason that each hunter exited
-         - The evidence collected by each hunter and which ghost is represented by that evidence.
-    7. Clean up all dynamically allocated resources and call sem_destroy() on all semaphores.
-    */
-    /*
-    log hunter init
-    log move
-    log evidence
-    log swap
-    log exit
-    log return to van
-    similar for ghost
-    */
     return 0;
 }
